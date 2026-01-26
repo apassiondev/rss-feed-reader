@@ -10,10 +10,13 @@ async function main() {
     console.log(title);
 
     const results = items.map(({ title, link }) => ({ title, link }));
+
+    console.clear();
     console.table(results);
+    console.log("Last updated:", new Date().toUTCString());
   } catch (error) {
     throw new Error(error);
   }
 }
 
-main();
+setInterval(main, 2000);
