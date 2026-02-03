@@ -1,5 +1,8 @@
 import Parser from "rss-parser";
 import chalk from "chalk";
+import promptModule from "prompt-sync";
+
+const prompt = new promptModule({ sigint: true });
 
 async function main() {
   const parser = new Parser({
@@ -49,10 +52,17 @@ const aggregate = (responses, feedItems, searchKey = "") => {
 };
 
 const print = (feedItems) => {
+  const customItems = [];
+  const title = prompt("Recipe title: "); // prompt user to add new feed item's title and link
+  const link = prompt("Recipe URL: ");
+  if (![link, title].includes(undefined)) {
+    customItems.push({ link, title }); // add the resulting item object to customItems if neither the title or the link is missing.
+  }
+
   // clear previous logs from the console
   console.clear();
   // print the filtered items as a table
-  console.table(feedItems);
+  console.table(feedItems.concat(customItems));
   // display the time of the last update in UTC format
   console.log("Last updated:", new Date().toUTCString());
 };
